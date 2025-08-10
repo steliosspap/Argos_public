@@ -327,23 +327,6 @@ cd ../osint-ingestion
 npm test
 ```
 
-## 📚 Documentation
-
-### **API Documentation**
-- [API Reference](./docs/api-reference.md)
-- [Database Schema](./docs/database-schema.md)
-- [Deployment Guide](./docs/deployment/DEPLOYMENT_GUIDE.md)
-
-### **User Guides**
-- [Getting Started](./docs/getting-started.md)
-- [Intelligence Analysis](./docs/intelligence-analysis.md)
-- [Configuration Guide](./docs/configuration.md)
-
-### **Developer Resources**
-- [Architecture Overview](./docs/architecture.md)
-- [Contributing Guidelines](./docs/contributing.md)
-- [Troubleshooting](./docs/troubleshooting.md)
-
 ## 🔒 Security
 
 ### **Data Protection**
@@ -374,10 +357,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Documentation**: [docs.argosintel.org](https://docs.argosintel.org)
 - **Issues**: [GitHub Issues](https://github.com/your-username/argos/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/your-username/argos/discussions)
-- **Email**: support@argosintel.org
 
 ---
-
-**Built with ❤️ for the intelligence community**
-
 *Argos - Global Conflict Intelligence Platform*
