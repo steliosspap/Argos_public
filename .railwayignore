@@ -1,0 +1,28 @@
+# Ignore Deno files that might confuse Railway
+osint_app/osint-ingestion/api/
+osint_app/osint-ingestion/deployment/
+osint_app/osint-ingestion/deno.json
+osint_app/osint-ingestion/deno.lock
+*.deno
+deno.json
+deno.lock
+
+# Force Railway to ignore Deno analytics and Vercel functions
+osint_app/osint-ingestion/api/
+osint_app/osint-ingestion/api.disabled/
+osint_app/osint-ingestion/vercel.json
+vercel.json
+
+# Ignore Vercel configurations
+vercel.json
+osint_app/vercel.json
+
+# Ignore other unnecessary files
+.git/
+.github/
+docs/
+*.md
+.DS_Store
+node_modules/
+.env.local
+.env

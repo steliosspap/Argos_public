@@ -1,0 +1,85 @@
+# Multi-stage build for efficient image size
+FROM python:3.11-slim as python-builder
+
+# Install Python dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python packages
+COPY requirements.txt /tmp/
+RUN pip install --no-cache-dir --user -r /tmp/requirements.txt
+
+# Install sentence-transformers models
+RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')"
+
+# Main stage
+FROM node:20-slim
+
+# Install runtime dependencies
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    git \
+    curl \
+    postgresql-client \
+    # For snscrape
+    firefox-esr \
+    # For media analysis
+    ffmpeg \
+    imagemagick \
+    tesseract-ocr \
+    # Cleanup
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy Python dependencies from builder
+COPY --from=python-builder /root/.local /root/.local
+ENV PATH=/root/.local/bin:$PATH
+
+# Create app directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install Node.js production dependencies
+RUN npm ci --only=production
+
+# Install additional Node packages for API server
+RUN npm install express cors helmet compression express-rate-limit
+
+# Copy application files
+COPY . .
+
+# Install pgvector extension files
+COPY lib/pgvector /usr/local/lib/pgvector
+
+# Create necessary directories
+RUN mkdir -p logs reports .cache .temp/clustering
+
+# Install snscrape
+RUN pip3 install --no-cache-dir snscrape
+
+# Make scripts executable
+RUN chmod +x cli.js cli-enhanced.js
+RUN chmod +x scripts/*.py
+
+# Create non-root user
+RUN groupadd -g 1001 nodejs && \
+    useradd -r -u 1001 -g nodejs nodejs && \
+    chown -R nodejs:nodejs /app
+
+# Switch to non-root user
+USER nodejs
+
+# Expose ports
+EXPOSE 3000 3001
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:3001/health', (r) => process.exit(r.statusCode === 200 ? 0 : 1))" || exit 1
+
+# Default command
+CMD ["node", "cli-enhanced.js", "monitor", "--interval", "15", "--alerts"]

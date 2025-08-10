@@ -1,0 +1,153 @@
+// Example implementation for your MapboxMap component
+// Copy this useEffect into your existing MapboxMap component
+
+import { useEffect, useRef, useState } from 'react';
+import mapboxgl from 'mapbox-gl';
+
+// Add this useEffect to your MapboxMap component where 'map' is your mapbox instance
+export function MapboxMapComponent() {
+  // Assume you already have your map instance
+  const [map, setMap] = useState<mapboxgl.Map | null>(null);
+  
+  // Real-time conflict events effect
+  useEffect(() => {
+    if (!map) return;
+
+    const SOURCE_ID = 'conflict-events';
+    const LAYER_ID = 'conflict-events-layer';
+    let intervalId: NodeJS.Timeout;
+    let isSourceAdded = false;
+
+    async function updateConflictEvents() {
+      try {
+        // Only proceed if map style is loaded
+        if (!map.isStyleLoaded()) {
+          console.log('Waiting for map style to load...');
+          return;
+        }
+
+        // Fetch latest conflict events
+        const response = await fetch('/api/events');
+        const geoJsonData = await response.json();
+
+        // Get existing source or add new one
+        const existingSource = map.getSource(SOURCE_ID) as mapboxgl.GeoJSONSource;
+
+        if (existingSource) {
+          // Update existing source data
+          existingSource.setData(geoJsonData);
+          console.log(`Updated ${geoJsonData.features.length} conflict events`);
+        } else if (!isSourceAdded) {
+          // Add source for first time
+          map.addSource(SOURCE_ID, {
+            type: 'geojson',
+            data: geoJsonData
+          });
+
+          // Add circle layer with dynamic styling
+          map.addLayer({
+            id: LAYER_ID,
+            type: 'circle',
+            source: SOURCE_ID,
+            paint: {
+              // Scale radius with escalation score (8px to 20px)
+              'circle-radius': [
+                'interpolate',
+                ['linear'],
+                ['get', 'escalation_score'],
+                0, 8,
+                10, 20
+              ],
+              // Color based on escalation score
+              'circle-color': [
+                'case',
+                ['>', ['get', 'escalation_score'], 8], '#8B0000',  // Dark red for > 8
+                ['>=', ['get', 'escalation_score'], 5], '#FF8C00', // Orange for 5-8
+                '#FFD700' // Yellow for < 5
+              ],
+              'circle-opacity': 0.8,
+              'circle-stroke-width': 2,
+              'circle-stroke-color': '#FFFFFF',
+              'circle-stroke-opacity': 0.8
+            }
+          });
+
+          // Add click handler for popups
+          map.on('click', LAYER_ID, (e) => {
+            if (!e.features || !e.features[0]) return;
+
+            const feature = e.features[0];
+            const coordinates = (feature.geometry as any).coordinates.slice();
+            const properties = feature.properties;
+
+            // Ensure popup appears at correct location
+            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+              coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            }
+
+            new mapboxgl.Popup()
+              .setLngLat(coordinates)
+              .setHTML(`
+                <div class="p-2">
+                  <h3 class="font-bold text-base mb-1">${properties.title}</h3>
+                  <p class="text-sm">Region: ${properties.region}</p>
+                  <p class="text-sm">Severity: ${properties.severity}</p>
+                  <p class="text-sm">Score: ${properties.escalation_score}</p>
+                </div>
+              `)
+              .addTo(map);
+          });
+
+          // Change cursor on hover
+          map.on('mouseenter', LAYER_ID, () => {
+            map.getCanvas().style.cursor = 'pointer';
+          });
+
+          map.on('mouseleave', LAYER_ID, () => {
+            map.getCanvas().style.cursor = '';
+          });
+
+          isSourceAdded = true;
+          console.log('Added conflict events layer');
+        }
+      } catch (error) {
+        console.error('Error updating conflict events:', error);
+      }
+    }
+
+    // Initialize updates
+    function startUpdates() {
+      // Initial update
+      updateConflictEvents();
+
+      // Set up 30-second interval
+      intervalId = setInterval(updateConflictEvents, 30000);
+    }
+
+    // Wait for map to be ready, then start updates
+    if (map.isStyleLoaded()) {
+      startUpdates();
+    } else {
+      map.once('styledata', startUpdates);
+    }
+
+    // Cleanup on unmount
+    return () => {
+      // Clear interval
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+
+      // Remove event handlers
+      try {
+        map.off('click', LAYER_ID);
+        map.off('mouseenter', LAYER_ID);
+        map.off('mouseleave', LAYER_ID);
+      } catch (e) {
+        // Ignore errors during cleanup
+      }
+    };
+  }, [map]); // Only re-run if map instance changes
+
+  // ... rest of your component
+}

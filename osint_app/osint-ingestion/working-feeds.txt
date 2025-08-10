@@ -1,0 +1,10 @@
+[INFO] Testing RSS connections...
+[✓] priority-1: Connected
+[✓] priority-3: Connected
+[✓] priority-4: Connected
+[✓] priority-5: Connected
+[✓] priority-6: Connected
+[✓] priority-7: Connected
+[✓] priority-8: Connected
+[✓] priority-12: Connected
+[✓] priority-27: Connected

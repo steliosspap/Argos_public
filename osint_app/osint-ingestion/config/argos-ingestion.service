@@ -1,0 +1,21 @@
+[Unit]
+Description=ARGOS Intelligent OSINT Ingestion Service
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/path/to/argos/osint_app/osint-ingestion
+ExecStart=/usr/bin/node intelligent-ingestion.js --limit 50
+StandardOutput=append:/var/log/argos-ingestion.log
+StandardError=append:/var/log/argos-ingestion.log
+
+# Environment variables (update paths as needed)
+Environment="NODE_ENV=production"
+Environment="PATH=/usr/local/bin:/usr/bin:/bin"
+
+# Restart policy
+Restart=on-failure
+RestartSec=60
+
+[Install]
+WantedBy=multi-user.target

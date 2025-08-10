@@ -1,0 +1,30 @@
+{
+  "name": "argos-osint-ingestion",
+  "version": "2.0.0",
+  "description": "Enhanced OSINT Pipeline",
+  "main": "cli-enhanced.js",
+  "type": "module",
+  "scripts": {
+    "start": "node cli-enhanced.js monitor --interval 15 --alerts",
+    "test": "node cli-enhanced.js test"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "commander": "^11.1.0",
+    "chalk": "^5.3.0",
+    "ora": "^8.0.1",
+    "dotenv": "^16.3.1",
+    "node-fetch": "^3.3.2",
+    "openai": "^4.24.0",
+    "@supabase/supabase-js": "^2.39.2",
+    "cheerio": "^1.0.0-rc.12",
+    "rss-parser": "^3.13.0",
+    "axios": "^1.6.5",
+    "p-limit": "^5.0.0",
+    "winston": "^3.11.0",
+    "csv-parser": "^3.0.0",
+    "fs-extra": "^11.2.0"
+  }
+}

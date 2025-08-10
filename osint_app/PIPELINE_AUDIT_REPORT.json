@@ -1,0 +1,142 @@
+{
+  "source_coverage": {
+    "summary": "254 RSS feeds across 16 categories with strong global coverage but notable gaps in South Asia, Oceania, and the Caribbean. 47.6% English dominance with good multilingual support.",
+    "issues": [
+      "No dedicated sources for India, Pakistan, Bangladesh, or Australia",
+      "11 Chinese sources still using insecure HTTP connections",
+      "Several Russian feeds using potentially outdated /export/ paths",
+      "Limited coverage of Nordic countries and Central Asian republics",
+      "Heavy English-language bias (121 of 254 sources)"
+    ],
+    "suggestions": [
+      "Add South Asian sources: Times of India, Dawn (Pakistan), Daily Star (Bangladesh)",
+      "Add Oceania sources: ABC Australia, stuff.co.nz",
+      "Update all HTTP feeds to HTTPS where available",
+      "Implement automated feed health monitoring to detect broken feeds",
+      "Add more local-language sources for ground-level coverage",
+      "Include citizen journalism platforms and social media aggregators"
+    ]
+  },
+  "event_detection": {
+    "summary": "Sophisticated weighted scoring system across military, conflict, geopolitical, technology, and humanitarian categories, but suffering from overly strict filtering resulting in only 1.3% pass rate.",
+    "issues": [
+      "Relevance threshold was too high (0.4), now lowered to 0.15",
+      "Missing event types: economic warfare, information warfare, hybrid threats",
+      "No sentiment analysis for escalation prediction",
+      "Limited entity extraction and relationship mapping",
+      "Primarily optimized for English content, missing multilingual events",
+      "No feedback loop to tune detection accuracy"
+    ],
+    "suggestions": [
+      "Expand event classifiers to include modern conflict types",
+      "Implement multi-language NLP processing",
+      "Add entity relationship extraction to track actor networks",
+      "Develop trend analysis for escalation prediction",
+      "Create A/B testing framework for threshold optimization",
+      "Add source credibility scoring to weight reliable sources higher"
+    ]
+  },
+  "geolocation_accuracy": {
+    "summary": "Multi-layered geocoding with Nominatim, Mapbox, and local databases, but achieving only 14.4% coordinate coverage with most events defaulting to country centroids.",
+    "issues": [
+      "85.6% of events lack coordinates entirely",
+      "98.6% of events missing city-level information",
+      "Many events cluster at country centroids (low precision)",
+      "Limited location extraction from article text",
+      "OpenAI SITREP extraction not consistently providing location data",
+      "Duplicate events reducing effective geographic coverage"
+    ],
+    "suggestions": [
+      "Enhance OpenAI prompt to prioritize location extraction",
+      "Expand city database with conflict-zone locations and variations",
+      "Implement named entity recognition (NER) for better location extraction",
+      "Add geocoding success rate monitoring and alerts",
+      "Use more aggressive location inference from article context",
+      "Implement the suggested staging table for coordinate enrichment",
+      "Add manual geocoding interface for high-value events"
+    ]
+  },
+  "deduplication": {
+    "summary": "Two-tier deduplication using URL and content hashing, preventing exact duplicates but lacking sophistication for similar events or updates to ongoing incidents.",
+    "issues": [
+      "Different hash methods between ingestion and cleanup scripts",
+      "No fuzzy matching for similar but not identical events",
+      "Updates to ongoing events treated as new events",
+      "Daily deduplication might merge distinct same-day events",
+      "No merge strategy - duplicates are discarded not combined",
+      "Content hash not enforced as UNIQUE at database level"
+    ],
+    "suggestions": [
+      "Implement similarity scoring with configurable thresholds",
+      "Create event update detection for follow-up articles",
+      "Use MinHash or similar for efficient similarity detection",
+      "Add database UNIQUE constraint on content_hash",
+      "Implement information merging from duplicate sources",
+      "Create event clustering for related but distinct incidents",
+      "Add monitoring for duplicate rates and false positives"
+    ]
+  },
+  "severity_scoring": {
+    "summary": "Confusion between reliability scores (source credibility) and escalation scores (event severity), with missing database columns causing the frontend to use incorrect fallbacks.",
+    "issues": [
+      "events table missing escalation_score column",
+      "Frontend using reliability score as escalation fallback",
+      "Multiple tables with inconsistent scoring systems",
+      "Sophisticated escalation algorithm not applied to main events",
+      "Missing 'critical' severity level in sync process",
+      "No null handling causing misleading visualizations"
+    ],
+    "suggestions": [
+      "Add escalation_score column to events table with proper constraints",
+      "Apply computeEscalationScore.js logic to all events during ingestion",
+      "Update Event TypeScript type to include escalation_score",
+      "Separate reliability and escalation in UI components",
+      "Fix severity mapping to include all four levels",
+      "Add proper null handling with meaningful defaults",
+      "Create data migration to backfill existing events"
+    ]
+  },
+  "system_health": {
+    "summary": "Basic error logging and multiple monitoring scripts exist but lack integration, persistence, and automated alerting. No centralized logging or dead letter queue for failed events.",
+    "issues": [
+      "Multiple overlapping monitoring scripts (potential dead code)",
+      "No structured logging with levels or correlation IDs",
+      "Monitoring not integrated into main pipeline execution",
+      "Missing database tables for metrics and alerts",
+      "No dead letter queue or retry mechanism",
+      "Unused monitoring dashboard component",
+      "Incomplete alert implementations (email alerts stubbed)"
+    ],
+    "suggestions": [
+      "Consolidate monitoring scripts into single comprehensive solution",
+      "Implement structured logging with winston or pino",
+      "Create missing monitoring database tables",
+      "Integrate monitoring hooks into main pipeline",
+      "Implement dead letter queue with retry logic",
+      "Enable the existing monitoring dashboard in the UI",
+      "Complete alert integrations for all channels",
+      "Add GitHub Actions workflow monitoring"
+    ]
+  },
+  "frontend_integration": {
+    "summary": "Well-architected data flow from PostgreSQL through Supabase to Mapbox with real-time updates, but events without coordinates are completely excluded and performance degrades with large datasets.",
+    "issues": [
+      "Events without coordinates excluded from map entirely",
+      "Multiple update mechanisms may cause race conditions",
+      "Individual marker rendering slow for thousands of events",
+      "No fallback visualization for non-geolocated events",
+      "Potential memory leaks with marker references",
+      "Cache invalidation issues with real-time updates"
+    ],
+    "suggestions": [
+      "Implement country-level aggregation for events without coordinates",
+      "Use Mapbox data-driven styling instead of DOM markers",
+      "Add coordinate confidence visualization",
+      "Consolidate real-time update strategies",
+      "Implement progressive loading for critical events first",
+      "Add proper cleanup for marker references",
+      "Create sidebar list view for non-mapped events",
+      "Optimize clustering thresholds for better performance"
+    ]
+  }
+}

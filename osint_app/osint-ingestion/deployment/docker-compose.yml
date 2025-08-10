@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  osint-pipeline:
+    build: 
+      context: ../
+      dockerfile: deployment/Dockerfile
+    container_name: argos-osint-pipeline
+    restart: unless-stopped
+    env_file:
+      - ./.env.production
+    volumes:
+      - ./logs:/app/logs
+      - ./reports:/app/reports
+    command: node cli.js monitor --interval 15 --alerts
+    networks:
+      - argos-network
+    healthcheck:
+      test: ["CMD", "node", "test-setup.js"]
+      interval: 5m
+      timeout: 30s
+      retries: 3
+      start_period: 1m
+
+  # Optional: Redis for caching (if needed in future)
+  redis:
+    image: redis:7-alpine
+    container_name: argos-redis
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    networks:
+      - argos-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  argos-network:
+    driver: bridge
+
+volumes:
+  redis-data:

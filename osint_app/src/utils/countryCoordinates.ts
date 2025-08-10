@@ -1,0 +1,207 @@
+// Country coordinates mapping for arms deals visualization
+export const countryCoordinates: Record<string, [number, number]> = {
+  // Major Arms Exporters
+  'USA': [-95.7129, 37.0902],
+  'United States': [-95.7129, 37.0902],
+  'Russia': [105.3188, 61.5240],
+  'Russian Federation': [105.3188, 61.5240],
+  'China': [104.1954, 35.8617],
+  'France': [2.2137, 46.2276],
+  'UK': [-3.4360, 55.3781],
+  'United Kingdom': [-3.4360, 55.3781],
+  'Germany': [10.4515, 51.1657],
+  'Israel': [34.8516, 31.0461],
+  'Italy': [12.5674, 41.8719],
+  'Spain': [-3.7492, 40.4637],
+  'South Korea': [127.7669, 35.9078],
+  'Netherlands': [5.2913, 52.1326],
+  'Canada': [-106.3468, 56.1304],
+  'Sweden': [18.6435, 60.1282],
+  'Norway': [8.4689, 60.4720],
+  'Switzerland': [8.2275, 46.8182],
+  'Belgium': [4.4699, 50.5039],
+  'Austria': [14.5501, 47.5162],
+  'Czech Republic': [15.4730, 49.8175],
+  'Poland': [19.1451, 51.9194],
+  
+  // Major Arms Importers
+  'India': [78.9629, 20.5937],
+  'Saudi Arabia': [45.0792, 23.8859],
+  'Egypt': [30.8025, 26.8206],
+  'Australia': [133.7751, -25.2744],
+  'UAE': [53.8478, 23.4241],
+  'United Arab Emirates': [53.8478, 23.4241],
+  'Pakistan': [69.3451, 30.3753],
+  'Turkey': [35.2433, 38.9637],
+  'Iraq': [43.6793, 33.2232],
+  'Japan': [138.2529, 36.2048],
+  'Indonesia': [113.9213, -0.7893],
+  'Singapore': [103.8198, 1.3521],
+  'Thailand': [100.9925, 15.8700],
+  'Vietnam': [108.2772, 14.0583],
+  'Qatar': [51.1839, 25.3548],
+  'Kuwait': [47.4818, 29.3117],
+  'Algeria': [1.6596, 28.0339],
+  'Morocco': [-7.0926, 31.7917],
+  'Brazil': [-51.9253, -14.2350],
+  'Mexico': [-102.5528, 23.6345],
+  'Colombia': [-74.2973, 4.5709],
+  'Chile': [-71.5430, -35.6751],
+  'Peru': [-75.0152, -9.1900],
+  'Argentina': [-63.6167, -38.4161],
+  
+  // Conflict Zones and Others
+  'Ukraine': [31.1656, 48.3794],
+  'Iran': [53.6880, 32.4279],
+  'North Korea': [127.5101, 40.3399],
+  'South Africa': [22.9375, -30.5595],
+  'Nigeria': [8.6753, 9.0820],
+  'Ethiopia': [40.4897, 9.1450],
+  'Kenya': [37.9062, -0.0236],
+  'Libya': [17.2283, 26.3351],
+  'Syria': [38.9968, 34.8021],
+  'Yemen': [48.5164, 15.5527],
+  'Afghanistan': [67.7100, 33.9391],
+  'Myanmar': [95.9560, 21.9162],
+  'Bangladesh': [90.3563, 23.6850],
+  'Philippines': [121.7740, 12.8797],
+  'Malaysia': [101.9758, 4.2105],
+  'New Zealand': [174.8860, -40.9006],
+  'Finland': [25.7482, 61.9241],
+  'Denmark': [9.5018, 56.2639],
+  'Greece': [21.8243, 39.0742],
+  'Romania': [24.9668, 45.9432],
+  'Bulgaria': [25.4858, 42.7339],
+  'Serbia': [21.0059, 44.0165],
+  'Croatia': [15.2000, 45.1000],
+  'Hungary': [19.5033, 47.1625],
+  'Slovakia': [19.6990, 48.6690],
+  'Portugal': [-8.2245, 39.3999],
+  'Ireland': [-8.2439, 53.4129],
+  'Venezuela': [-66.5897, 6.4238],
+  'Ecuador': [-78.1834, -1.8312],
+  'Bolivia': [-63.5887, -16.2902],
+  'Paraguay': [-58.4438, -23.4425],
+  'Uruguay': [-55.7658, -32.5228],
+  'Cuba': [-77.7812, 21.5218],
+  'Dominican Republic': [-70.1627, 18.7357],
+  'Jamaica': [-77.2975, 18.1096],
+  'Haiti': [-72.2852, 18.9712],
+  'Panama': [-80.7821, 8.5380],
+  'Costa Rica': [-83.7534, 9.7489],
+  'Nicaragua': [-85.2072, 12.8654],
+  'Honduras': [-86.2419, 15.2000],
+  'El Salvador': [-88.8965, 13.7942],
+  'Guatemala': [-90.2308, 15.7835],
+  'Belize': [-88.4976, 17.1899],
+  'Taiwan': [121.0000, 23.5000],
+  'Hong Kong': [114.1694, 22.3193],
+  'Macau': [113.5439, 22.1987],
+  'Mongolia': [103.8467, 46.8625],
+  'Kazakhstan': [66.9237, 48.0196],
+  'Uzbekistan': [64.5853, 41.3775],
+  'Turkmenistan': [59.5563, 38.9697],
+  'Tajikistan': [71.2761, 38.8610],
+  'Kyrgyzstan': [74.7661, 41.2044],
+  'Armenia': [45.0382, 40.0691],
+  'Azerbaijan': [47.5769, 40.1431],
+  'Georgia': [43.3569, 42.3154],
+  'Lebanon': [35.8623, 33.8547],
+  'Jordan': [36.2384, 30.5852],
+  'Bahrain': [50.5577, 26.0667],
+  'Oman': [55.9754, 21.4735],
+  'Tunisia': [9.5375, 33.8869],
+  'Sudan': [30.2176, 12.8628],
+  'South Sudan': [31.3070, 6.8770],
+  'Somalia': [46.1996, 5.1521],
+  'Eritrea': [39.7823, 15.1794],
+  'Djibouti': [42.5903, 11.8251],
+  'Uganda': [32.2903, 1.3733],
+  'Rwanda': [29.8739, -1.9403],
+  'Burundi': [29.9189, -3.3731],
+  'Tanzania': [34.8888, -6.3690],
+  'Mozambique': [35.5296, -18.6657],
+  'Zimbabwe': [29.1549, -19.0154],
+  'Zambia': [27.8493, -13.1339],
+  'Malawi': [34.3015, -13.2543],
+  'Angola': [17.8739, -11.2027],
+  'Namibia': [18.4904, -22.9576],
+  'Botswana': [24.6849, -22.3285],
+  'Madagascar': [46.8691, -18.7669],
+  'Ghana': [-1.0232, 7.9465],
+  'Ivory Coast': [-5.5471, 7.5400],
+  'Senegal': [-14.4524, 14.4974],
+  'Mali': [-3.9962, 17.5707],
+  'Burkina Faso': [-1.5616, 12.2383],
+  'Niger': [8.0817, 17.6078],
+  'Chad': [18.7322, 15.4542],
+  'Cameroon': [12.3547, 7.3697],
+  'Central African Republic': [20.9394, 6.6111],
+  'DR Congo': [21.7587, -4.0383],
+  'Congo': [15.8277, -0.2280],
+  'Gabon': [11.6094, -0.8037],
+  'Equatorial Guinea': [10.2679, 1.6508],
+  'Belarus': [27.9534, 53.7098],
+  'Moldova': [28.3699, 47.4116],
+  'Lithuania': [23.8813, 55.1694],
+  'Latvia': [24.6032, 56.8796],
+  'Estonia': [25.0136, 58.5953],
+  'Albania': [20.1683, 41.1533],
+  'North Macedonia': [21.7453, 41.6086],
+  'Montenegro': [19.3744, 42.7087],
+  'Kosovo': [20.9260, 42.6026],
+  'Bosnia and Herzegovina': [17.6791, 43.9159],
+  'Slovenia': [14.9955, 46.1512],
+  'Malta': [14.3754, 35.9375],
+  'Cyprus': [33.4299, 35.1264],
+  'Iceland': [-19.0208, 64.9631],
+  'Liechtenstein': [9.5554, 47.1660],
+  'Luxembourg': [6.1296, 49.8153],
+  'Monaco': [7.4246, 43.7384],
+  'San Marino': [12.4578, 43.9424],
+  'Vatican City': [12.4534, 41.9029],
+  'Andorra': [1.6016, 42.5462],
+  
+  // Alternative spellings and abbreviations
+  'US': [-95.7129, 37.0902],
+  'U.S.': [-95.7129, 37.0902],
+  'U.S.A.': [-95.7129, 37.0902],
+  'GB': [-3.4360, 55.3781],
+  'Great Britain': [-3.4360, 55.3781],
+  'PRC': [104.1954, 35.8617],
+  'ROK': [127.7669, 35.9078],
+  'DPRK': [127.5101, 40.3399],
+  'RSA': [22.9375, -30.5595],
+  'DRC': [21.7587, -4.0383],
+  'CAR': [20.9394, 6.6111],
+  'Czechia': [15.4730, 49.8175]
+};
+
+// Helper function to get coordinates with fallback
+export function getCountryCoordinates(country: string): [number, number] | null {
+  if (!country) return null;
+  
+  // Try exact match first
+  if (countryCoordinates[country]) {
+    return countryCoordinates[country];
+  }
+  
+  // Try case-insensitive match
+  const normalizedCountry = country.trim();
+  for (const [key, coords] of Object.entries(countryCoordinates)) {
+    if (key.toLowerCase() === normalizedCountry.toLowerCase()) {
+      return coords;
+    }
+  }
+  
+  // Try partial match for common variations
+  for (const [key, coords] of Object.entries(countryCoordinates)) {
+    if (key.toLowerCase().includes(normalizedCountry.toLowerCase()) || 
+        normalizedCountry.toLowerCase().includes(key.toLowerCase())) {
+      return coords;
+    }
+  }
+  
+  console.warn(`No coordinates found for country: ${country}`);
+  return null;
+}

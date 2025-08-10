@@ -1,0 +1,157 @@
+version: '3.8'
+
+services:
+  # PostgreSQL with pgvector
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: argos-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-argos}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-secret}
+      POSTGRES_DB: ${POSTGRES_DB:-argos_osint}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ../sql/add-embedding.sql:/docker-entrypoint-initdb.d/01-add-embedding.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - argos-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-argos}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Main OSINT Pipeline Service
+  osint-pipeline:
+    build: 
+      context: ../
+      dockerfile: deployment/Dockerfile.enhanced
+    container_name: argos-osint-pipeline
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    env_file:
+      - ./.env.production
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-argos}:${POSTGRES_PASSWORD:-secret}@postgres:5432/${POSTGRES_DB:-argos_osint}
+      - REDIS_URL=redis://redis:6379
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./logs:/app/logs
+      - ./reports:/app/reports
+      - cache-data:/app/.cache
+      - temp-data:/app/.temp
+      - models-data:/app/models
+    command: node cli-enhanced.js monitor --interval 15 --alerts
+    networks:
+      - argos-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # API Server
+  api-server:
+    build: 
+      context: ../
+      dockerfile: deployment/Dockerfile.enhanced
+    container_name: argos-api-server
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - ./.env.production
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-argos}:${POSTGRES_PASSWORD:-secret}@postgres:5432/${POSTGRES_DB:-argos_osint}
+      - PORT=3001
+    volumes:
+      - models-data:/app/models:ro
+    command: node api/server.js
+    ports:
+      - "3001:3001"
+    networks:
+      - argos-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis for caching
+  redis:
+    image: redis:7-alpine
+    container_name: argos-redis
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    networks:
+      - argos-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Vector Worker (for CPU-intensive embedding tasks)
+  vector-worker:
+    build: 
+      context: ../
+      dockerfile: deployment/Dockerfile.enhanced
+    container_name: argos-vector-worker
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - ./.env.production
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-argos}:${POSTGRES_PASSWORD:-secret}@postgres:5432/${POSTGRES_DB:-argos_osint}
+      - WORKER_TYPE=vector
+    volumes:
+      - models-data:/app/models
+    command: python3 scripts/vector_worker.py
+    networks:
+      - argos-network
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+
+  # Nginx reverse proxy (optional)
+  nginx:
+    image: nginx:alpine
+    container_name: argos-nginx
+    restart: unless-stopped
+    depends_on:
+      - api-server
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "80:80"
+    networks:
+      - argos-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  argos-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  redis-data:
+  cache-data:
+  temp-data:
+  models-data:

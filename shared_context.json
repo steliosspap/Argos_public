@@ -1,0 +1,143 @@
+{
+  "database": "PostgreSQL via Supabase",
+  "auth_method": "Session-based auth using Supabase",
+  "frontend_framework": "Next.js + Tailwind CSS + TypeScript",
+  "backend_api": "Next.js API routes (REST-style)",
+  "map_visualization": "Leaflet.js",
+  "deployment": "Vercel",
+  "CI_CD": "GitHub Actions",
+  "news_ingestion": {
+    "sources": "RSS feeds from trusted OSINT sources",
+    "frequency": "Every 30 minutes via scheduled GitHub Action",
+    "deduplication": true,
+    "escalation_scoring": "Based on keywords, geography, severity"
+  },
+  "api_standards": {
+    "error_handling": "Standardized APIError class with error codes",
+    "validation": "Zod schemas for request/response validation",
+    "middleware": "Composable middleware pattern for cross-cutting concerns",
+    "response_format": {
+      "success": {
+        "data": "T",
+        "meta": {
+          "page": "number (optional)",
+          "limit": "number (optional)",
+          "total": "number (optional)",
+          "hasMore": "boolean (optional)"
+        },
+        "timestamp": "ISO 8601 string"
+      },
+      "error": {
+        "error": {
+          "code": "ErrorCode enum",
+          "message": "string",
+          "details": "any (optional)",
+          "timestamp": "ISO 8601 string",
+          "path": "string (optional)"
+        }
+      }
+    }
+  },
+  "api_endpoints": {
+    "/api/news": {
+      "GET": {
+        "description": "Fetch news articles with filtering",
+        "query_params": "search, regions[], minEscalationScore, startDate, endDate, page, limit",
+        "response": "NewsResponse[]"
+      },
+      "POST": {
+        "description": "Create new news article",
+        "body": "CreateNews schema",
+        "response": "NewsResponse"
+      }
+    },
+    "/api/conflict-events": {
+      "GET": {
+        "description": "Fetch conflict events with advanced filtering",
+        "query_params": "regions[], types[], minReliability, startDate, endDate, page, limit",
+        "response": "ConflictEvent[]"
+      },
+      "POST": {
+        "description": "Create new conflict event",
+        "body": "CreateConflictEvent schema",
+        "response": "ConflictEventResponse"
+      }
+    },
+    "/api/arms-deals": {
+      "GET": {
+        "description": "Fetch arms deals with filtering",
+        "query_params": "buyer_country, seller_country, weapon_type, minValue, maxValue, status, startDate, endDate, page, limit",
+        "response": "ArmsDealResponse[]"
+      },
+      "POST": {
+        "description": "Create new arms deal",
+        "body": "CreateArmsDeal schema",
+        "response": "ArmsDealResponse"
+      }
+    },
+    "/api/analytics/regions": {
+      "GET": {
+        "description": "Get regional analytics",
+        "query_params": "region, startDate, endDate",
+        "response": "RegionAnalytics"
+      }
+    },
+    "/api/analytics/timeline": {
+      "GET": {
+        "description": "Get timeline analytics",
+        "query_params": "granularity, startDate, endDate",
+        "response": "TimelineAnalytics"
+      }
+    },
+    "/api/analytics/top-countries": {
+      "GET": {
+        "description": "Get top countries by metric",
+        "query_params": "metric, limit, startDate, endDate",
+        "response": "CountryAnalytics[]"
+      }
+    },
+    "/api/intelligence/analyze-arms": {
+      "POST": {
+        "description": "Analyze a single arms deal for strategic intelligence",
+        "body": "ArmsAnalysisInput schema",
+        "response": "ArmsIntelligenceResult"
+      }
+    },
+    "/api/intelligence/batch-analyze": {
+      "POST": {
+        "description": "Batch analyze multiple arms deals for intelligence",
+        "body": "{ deals: ArmsAnalysisInput[] }",
+        "response": "BatchArmsIntelligenceResult"
+      }
+    },
+    "/api/analytics/intelligence": {
+      "GET": {
+        "description": "Get intelligence-enhanced analytics with risk assessment",
+        "query_params": "startDate, endDate, risk_level, oversight_level, regions[], limit",
+        "response": "IntelligenceAnalytics"
+      }
+    }
+  },
+  "database_tables": {
+    "news": {
+      "columns": "id, title, url, source, content, published_at, region, country, coordinates, escalation_score, ai_summary, tags[], created_at, updated_at",
+      "indexes": "url (unique), published_at, escalation_score, region, full-text on content"
+    },
+    "conflict_events": {
+      "columns": "id, title, description, type, region, country, lat, lng, reliability_score, sources[], ai_analysis, timestamp, summary, event_type, severity, source_type, affiliation, escalation_score, created_at, updated_at",
+      "indexes": "timestamp, type, region, country, reliability_score, GiST on (lat, lng)"
+    },
+    "arms_deals": {
+      "columns": "id, date, buyer_country, seller_country, seller_company, weapon_system, deal_value, currency, source_link, description, status, created_at",
+      "indexes": "buyer_country, seller_country, status, date, deal_value"
+    },
+    "events": {
+      "columns": "id, title, description, event_date, location, coordinates (geography), category, source, relevance_score, created_at, updated_at",
+      "indexes": "event_date, category, relevance_score, GiST on coordinates"
+    },
+    "beta_signups": {
+      "columns": "id, email, created_at",
+      "indexes": "email (unique)"
+    }
+  }
+}

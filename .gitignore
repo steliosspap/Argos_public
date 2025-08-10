@@ -1,0 +1,44 @@
+.vercel
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Environment variables
+.env
+.env.*
+.env.local
+.env.production
+
+# Dependencies
+node_modules/
+
+# Build outputs
+.next/
+out/
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Data and reports
+osint_app/data/
+osint_app/reports/
+osint_app/data/batch-output/
+osint_app/data/rss-ingestion/
+osint_app/data/translated-articles/
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
+.cache/
+dataset argos/*.csv

@@ -1,0 +1,84 @@
+{
+  "version": 2,
+  "framework": "nextjs",
+  "buildCommand": "cd osint_app && npm run build",
+  "outputDirectory": "osint_app/.next",
+  "installCommand": "cd osint_app && npm ci",
+  "devCommand": "cd osint_app && npm run dev",
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "s-maxage=60, stale-while-revalidate"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/www.argosintel.org/:path*",
+      "destination": "https://argosintel.org/:path*",
+      "permanent": true
+    }
+  ],
+  "env": {
+    "NEXT_PUBLIC_SUPABASE_URL": "https://dduximhdfknhxjnpnigu.supabase.co",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkdXhpbWhkZmtuaHhqbnBuaWd1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEyMDk2ODUsImV4cCI6MjA2Njc4NTY4NX0.Os7RQgLs9kKMgFVteyyjXOE234GQDIDoSq5QzuefNr4",
+    "SUPABASE_SERVICE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkdXhpbWhkZmtuaHhqbnBuaWd1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MTIwOTY4NSwiZXhwIjoyMDY2Nzg1Njg1fQ.n4uC19EpEJvclohhe_D2k1cTT592wS1tVKMQG5PvlBE",
+    "NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN": "pk.eyJ1Ijoic3RlbGlvc3NwYXAiLCJhIjoiY21jaHB2ZnpiMTB4MTJqcXQzZHgxbDVzYyJ9.iZzdxomuFZhMNvqCC-Hbrg",
+            "OPENAI_API_KEY": "@openai-api-key",
+    "OPENAI_MODEL": "gpt-4o",
+    "GOOGLE_API_KEY": "AIzaSyD3bGTwqjVwjZTOM24uAnqDV8Qlqo5RChM",
+    "GOOGLE_SEARCH_ENGINE_ID": "041a36e7091e64628",
+    "NODE_ENV": "production"
+  },
+  "functions": {
+    "osint_app/src/app/api/ingest/route.ts": {
+      "maxDuration": 60
+    },
+    "osint_app/src/app/api/ingest-massive/route.ts": {
+      "maxDuration": 300
+    },
+    "osint_app/src/app/api/ingest-stream/route.ts": {
+      "maxDuration": 300
+    },
+    "osint_app/src/app/api/cron/intelligent-ingestion/route.ts": {
+      "maxDuration": 300
+    }
+  },
+  "crons": [
+    {
+      "path": "/api/cron/intelligent-ingestion",
+      "schedule": "0,30 * * * *"
+    }
+  ]
+}

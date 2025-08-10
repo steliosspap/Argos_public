@@ -1,0 +1,40 @@
+# Argos OSINT Pipeline - Phase 2 Python Requirements
+# Intelligence features: bias detection, entity linking, multilingual support
+
+# Core ML dependencies
+numpy==1.24.3
+scipy==1.11.4
+scikit-learn==1.3.2
+
+# Text embeddings
+sentence-transformers==2.2.2
+transformers==4.36.2
+torch==2.1.2 --index-url https://download.pytorch.org/whl/cpu
+
+# Clustering algorithms
+hdbscan==0.8.33
+umap-learn==0.5.5
+
+# Translation and language detection
+argostranslate==1.9.1
+langdetect==1.0.9
+
+# Bias detection support
+pandas==2.1.4
+textblob==0.17.1
+
+# Entity recognition and linking
+spacy==3.7.2
+requests==2.31.0
+
+# Database
+psycopg2-binary==2.9.9
+pgvector==0.2.4
+
+# Optional: Advanced models (comment out if not needed)
+# laser-embeddings==1.1.2  # LASER multilingual embeddings
+# labse==1.0.0  # LaBSE multilingual embeddings
+
+# Utilities
+python-dotenv==1.0.0
+tqdm==4.66.1

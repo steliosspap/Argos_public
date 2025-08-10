@@ -1,0 +1,12 @@
+-- Part 1: Add missing columns to events table (run this first)
+
+ALTER TABLE events ADD COLUMN IF NOT EXISTS admin_level_1 VARCHAR(255);
+ALTER TABLE events ADD COLUMN IF NOT EXISTS admin_level_2 VARCHAR(255);
+ALTER TABLE events ADD COLUMN IF NOT EXISTS confidence_score DECIMAL(3,2) DEFAULT 0.8;
+ALTER TABLE events ADD COLUMN IF NOT EXISTS source_count INTEGER DEFAULT 1;
+ALTER TABLE events ADD COLUMN IF NOT EXISTS event_type VARCHAR(100);
+ALTER TABLE events ADD COLUMN IF NOT EXISTS actors JSONB DEFAULT '[]'::jsonb;
+ALTER TABLE events ADD COLUMN IF NOT EXISTS targets JSONB DEFAULT '[]'::jsonb;
+ALTER TABLE events ADD COLUMN IF NOT EXISTS civilian_impact TEXT;
+ALTER TABLE events ADD COLUMN IF NOT EXISTS military_units JSONB DEFAULT '[]'::jsonb;
+ALTER TABLE events ADD COLUMN IF NOT EXISTS weapons_used JSONB DEFAULT '[]'::jsonb;

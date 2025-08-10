@@ -1,0 +1,86 @@
+{
+  "version": 2,
+  "framework": "nextjs",
+  "buildCommand": " npm run build",
+  "outputDirectory": ".next",
+  "installCommand": "npm i",
+  "devCommand": "npm run dev",
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "s-maxage=60, stale-while-revalidate"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/www.argosintel.org/:path*",
+      "destination": "https://argosintel.org/:path*",
+      "permanent": true
+    }
+  ],
+  "functions": {
+    "app/api/ingest/route.ts": {
+      "maxDuration": 60
+    },
+    "app/api/ingest-optimized/route.ts": {
+      "maxDuration": 90
+    },
+    "app/api/ingest-enhanced/route.ts": {
+      "maxDuration": 120
+    },
+    "app/api/ingest-massive/route.ts": {
+      "maxDuration": 300
+    },
+    "app/api/ingest-stream/route.ts": {
+      "maxDuration": 300
+    },
+    "app/api/cron/intelligent-ingestion/route.ts": {
+      "maxDuration": 300
+    },
+    "app/api/analytics/cluster/route.ts": {
+      "maxDuration": 60
+    }
+  },
+  "crons": [
+    {
+      "path": "/api/cron/intelligent-ingestion",
+      "schedule": "0,30 * * * *"
+    },
+    {
+      "path": "/api/cron/analyze-news",
+      "schedule": "15,45 * * * *"
+    }
+  ]
+}
