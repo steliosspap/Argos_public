@@ -141,7 +141,7 @@ docker-compose logs --tail=100 osint-pipeline
 ### 1. Use Environment Files
 Never hardcode secrets! Use `.env.production`:
 ```env
-OPENAI_API_KEY=sk-...
+OPENAI_API_KEY=your_openai_api_key_here
 SUPABASE_URL=https://...
 ```
 

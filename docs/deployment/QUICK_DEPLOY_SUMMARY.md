@@ -8,8 +8,8 @@
 # 2. Add these environment variables in Vercel dashboard:
 
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIs...
-NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN=pk.eyJ1IjoieW91ci11c2Vy...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key_here
+NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN=your_mapbox_token_here
 
 # 3. Deploy and get temporary URL (e.g., mercenary-abc123.vercel.app)
 # 4. Test the temporary URL works

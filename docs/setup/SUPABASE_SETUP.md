@@ -28,7 +28,7 @@ This guide will walk you through setting up the Supabase PostgreSQL database for
 1. In your Supabase dashboard, go to **Settings > API**
 2. Copy these values:
    - **Project URL**: `https://xxxxx.supabase.co`
-   - **Project API keys > anon public**: `eyJhbGci...`
+   - **Project API keys > anon public**: `your_anon_key_here`
 
 ### 3. Configure Environment Variables (1 minute)
 1. Copy `.env.local.example` to `.env.local`:
@@ -38,7 +38,7 @@ This guide will walk you through setting up the Supabase PostgreSQL database for
 2. Edit `.env.local` and replace with your values:
    ```
    NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGci...your_anon_key_here
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key_here
    NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN=your_mapbox_token_here
    ```
 

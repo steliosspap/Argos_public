@@ -53,7 +53,7 @@ Add your actual API keys:
 DATABASE_URL=postgresql://postgres:[YOUR-PASSWORD]@db.[YOUR-PROJECT].supabase.co:5432/postgres
 NEXT_PUBLIC_SUPABASE_URL=https://[YOUR-PROJECT].supabase.co
 SUPABASE_SERVICE_KEY=[YOUR-SERVICE-KEY]
-OPENAI_API_KEY=sk-[YOUR-KEY]
+OPENAI_API_KEY=your_openai_api_key_here
 NEWS_API_KEY=[YOUR-KEY]
 GOOGLE_API_KEY=[YOUR-KEY]
 ```

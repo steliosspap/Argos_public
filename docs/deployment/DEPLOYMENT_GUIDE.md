@@ -59,8 +59,8 @@ In Vercel dashboard → Project → Settings → Environment Variables:
 ```bash
 # Production Environment Variables
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN=pk.eyJ1IjoieW91ci11c2VybmFtZSIsImEiOiI...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key_here
+NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN=your_mapbox_token_here
 
 # Optional (if you have them configured)
 OPENAI_API_KEY=your_openai_api_key_here
